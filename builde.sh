@@ -1,4 +1,8 @@
 #!/bin/bash
+
+[ $# -ne 5 ] && { printf "Wrong number of arguments\n\nUsage: $0  --sync|--nosync --adb|--noadb devicename /e/branch buildscript-branch\nExample $0 --sync --noadb s2 v1-pie dev\n\n"; exit 1; }
+
+
 # Install build dependencies
 ############################
 apt -qq update
@@ -52,11 +56,11 @@ export INCLUDE_PROPRIETARY=true
 
 # Environment for the LineageOS branches name
 # See https://github.com/LineageOS/android_vendor_cm/branches for possible options
-export BRANCH_NAME='v1-oreo'
+export BRANCH_NAME=$4
 
 # Environment for the device list (separate by comma if more than one)
 # eg. DEVICE_LIST=hammerhead,bullhead,angler
-export DEVICE_LIST='s2'
+export DEVICE_LIST=$3
 
 # Release type string
 export RELEASE_TYPE='UNOFFICIAL'
@@ -164,9 +168,9 @@ rm -rf $TMP_DIR/buildscripts
 
 if [[ $BRANCH_NAME =~ pie$ ]]; then
   if [ "$1" = "--nosync" ]; then
-     git clone --branch dev https://github.com/picomatic/docker-lineage-cicd.git $TMP_DIR/buildscripts
+     git clone --branch $5 https://github.com/picomatic/docker-lineage-cicd.git $TMP_DIR/buildscripts
   else 
-     git clone --branch dev https://gitlab.e.foundation/e/os/docker-lineage-cicd.git $TMP_DIR/buildscripts
+     git clone --branch $5 https://gitlab.e.foundation/e/os/docker-lineage-cicd.git $TMP_DIR/buildscripts
   fi
 else
   if [ "$1" = "--nosync" ]; then
@@ -178,6 +182,18 @@ fi
 
 cp -rf $TMP_DIR/buildscripts/src/* /root/
 cp $TMP_DIR/buildscripts/apt_preferences /etc/apt/preferences
+
+#enable/disable adb by patching common.mk
+#remove old scripts
+rm /root/userscripts/* 2>/dev/null
+
+if [ "$2" = "--adb" ]; then
+   ANDROIDVERSION=$(echo $4| cut -d'-' -f 2)
+   ANDROIDVERSION=${ANDROIDVERSION^^}
+   printf "#!/bin/bash\nsed -i -e 's/eng/userdebug/g' $SRC_DIR/$ANDROIDVERSION/vendor/lineage/config/common.mk\n\n" > /root/userscripts/before.sh
+   chmod 755 /root/userscripts/before.sh
+fi
+
 # Download and build delta tools
 ################################
 cd /root/ && \
