@@ -166,18 +166,10 @@ mkdir -p $USERSCRIPTS_DIR
 ############################
 rm -rf $TMP_DIR/buildscripts
 
-if [[ $BRANCH_NAME =~ pie$ ]]; then
-  if [ "$1" = "--nosync" ]; then
-     git clone --branch $5 https://github.com/picomatic/docker-lineage-cicd.git $TMP_DIR/buildscripts
-  else 
-     git clone --branch $5 https://gitlab.e.foundation/e/os/docker-lineage-cicd.git $TMP_DIR/buildscripts
-  fi
-else
-  if [ "$1" = "--nosync" ]; then
-     git clone https://github.com/picomatic/docker-lineage-cicd.git $TMP_DIR/buildscripts
-  else 
-     git clone https://gitlab.e.foundation/e/os/docker-lineage-cicd.git $TMP_DIR/buildscripts
-  fi
+if [ "$1" = "--nosync" ]; then
+   git clone --branch $5 https://github.com/picomatic/docker-lineage-cicd.git $TMP_DIR/buildscripts
+else 
+   git clone --branch $5 https://gitlab.e.foundation/e/os/docker-lineage-cicd.git $TMP_DIR/buildscripts
 fi
 
 cp -rf $TMP_DIR/buildscripts/src/* /root/
