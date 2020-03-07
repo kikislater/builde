@@ -69,7 +69,9 @@ export MIRROR=''
 
 # OTA URL that will be used inside CMUpdater
 # Use this in combination with LineageOTA to make sure your device can auto-update itself from this buildbot
-export OTA_URL=''
+# 07/03/2020 : edited according to https://doc.e.foundation/how-tos/build-e
+# export OTA_URL=''
+export OTA_URL='https://ota.ecloud.global/api'
 
 # User identity
 export USER_NAME='user'
@@ -93,7 +95,11 @@ export WITH_SU=false
 export ANDROID_JACK_VM_ARGS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx4G"
 
 # Custom packages to be installed
-export CUSTOM_PACKAGES='MuPDF GmsCore GsfProxy FakeStore com.google.android.maps.jar Mail BlissLauncher BlissIconPack MozillaNlpBackend OpenWeatherMapWeatherProvider AccountManager MagicEarth OpenCamera eDrive Weather Notes Tasks NominatimNlpBackend Light DroidGuard OpenKeychain Message Browser BrowserWebView Apps LibreOfficeViewer'
+# 07/03/2020 : edited according to https://doc.e.foundation/how-tos/build-e
+#  - PdfViewer, Camera instead of muPDF, OpenCamera
+#  - re-introduced Light (not included in /e/ building list ...)
+# export CUSTOM_PACKAGES='MuPDF GmsCore GsfProxy FakeStore com.google.android.maps.jar Mail BlissLauncher BlissIconPack MozillaNlpBackend OpenWeatherMapWeatherProvider AccountManager MagicEarth OpenCamera eDrive Weather Notes Tasks NominatimNlpBackend Light DroidGuard OpenKeychain Message Browser BrowserWebView Apps LibreOfficeViewer'
+export CUSTOM_PACKAGES='PdfViewer GmsCore GsfProxy FakeStore com.google.android.maps.jar Mail BlissLauncher BlissIconPack MozillaNlpBackend OpenWeatherMapWeatherProvider AccountManager MagicEarth Camera eDrive Weather Notes Tasks NominatimNlpBackend Light DroidGuard OpenKeychain Message Browser BrowserWebView Apps LibreOfficeViewer'
 
 # Sign the builds with the keys in $KEYS_DIR
 export SIGN_BUILDS=false
