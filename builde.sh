@@ -69,9 +69,8 @@ export MIRROR=''
 
 # OTA URL that will be used inside CMUpdater
 # Use this in combination with LineageOTA to make sure your device can auto-update itself from this buildbot
-# 07/03/2020 : edited according to https://doc.e.foundation/how-tos/build-e
-# export OTA_URL=''
-export OTA_URL='https://ota.ecloud.global/api'
+export OTA_URL=''
+
 
 # User identity
 export USER_NAME='user'
