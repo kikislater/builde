@@ -54,9 +54,9 @@ export INCLUDE_PROPRIETARY=true
 # See https://github.com/LineageOS/android_vendor_cm/branches for possible options
 export BRANCH_NAME='v1-oreo'
 
-# Environment for the device list (separate by comma if more than one)
-# eg. DEVICE_LIST=hammerhead,bullhead,angler
-export DEVICE_LIST='s2'
+# Environment for the device name
+# eg. DEVICE='s2'
+export DEVICE='s2'
 
 # Release type string
 export RELEASE_TYPE='UNOFFICIAL'
@@ -69,7 +69,7 @@ export MIRROR=''
 
 # OTA URL that will be used inside CMUpdater
 # Use this in combination with LineageOTA to make sure your device can auto-update itself from this buildbot
-export OTA_URL=''
+# export OTA_URL=''
 
 
 # User identity
@@ -94,10 +94,6 @@ export WITH_SU=false
 export ANDROID_JACK_VM_ARGS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx4G"
 
 # Custom packages to be installed
-# 07/03/2020 : edited according to https://doc.e.foundation/how-tos/build-e
-#  - PdfViewer, Camera instead of muPDF, OpenCamera
-#  - re-introduced Light (not included in /e/ building list ...)
-# export CUSTOM_PACKAGES='MuPDF GmsCore GsfProxy FakeStore com.google.android.maps.jar Mail BlissLauncher BlissIconPack MozillaNlpBackend OpenWeatherMapWeatherProvider AccountManager MagicEarth OpenCamera eDrive Weather Notes Tasks NominatimNlpBackend Light DroidGuard OpenKeychain Message Browser BrowserWebView Apps LibreOfficeViewer'
 export CUSTOM_PACKAGES='PdfViewer GmsCore GsfProxy FakeStore com.google.android.maps.jar Mail BlissLauncher BlissIconPack MozillaNlpBackend OpenWeatherMapWeatherProvider AccountManager MagicEarth Camera eDrive Weather Notes Tasks NominatimNlpBackend Light DroidGuard OpenKeychain Message Browser BrowserWebView Apps LibreOfficeViewer'
 
 # Sign the builds with the keys in $KEYS_DIR
