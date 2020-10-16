@@ -1,33 +1,31 @@
 #!/bin/bash
 # Install build dependencies
 ############################
-apt -qq update
-apt -qqy upgrade
-apt install -y imagemagick libwxgtk3.0-dev openjdk-8-jdk
-apt install -y openjdk-7-jdk
-apt install -y bc bison build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf imagemagick libncurses5 lib32ncurses5-dev lib32readline-dev lib32z1-dev liblz4-tool libncurses5-dev libsdl1.2-dev libssl-dev libwxgtk3.0-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip unzip zlib1g-dev python git
+pacman -Syyu
+#apt install -y imagemagick libwxgtk3.0-dev openjdk-8-jdk
+#apt install -y openjdk-7-jdk
+#apt install -y bc bison build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf imagemagick libncurses5 lib32ncurses5-dev lib32readline-dev lib32z1-dev liblz4-tool libncurses5-dev libsdl1.2-dev libssl-dev libwxgtk3.0-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip unzip zlib1g-dev python git
 
 #install google repo
 ####################
-mkdir ~/bin 2>/dev/null
-PATH="$HOME/bin:$PATH"
-curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
-chmod a+x ~/bin/repo
+mkdir -p $HOME/e/bin 2>/dev/null
+PATH="$HOME/e/bin:$PATH"
+curl https://storage.googleapis.com/git-repo-downloads/repo > $HOME/e/bin/repo
+chmod a+x $HOME/e/bin/repo
 
 # Environment variables
 #######################
-export MIRROR_DIR=/srv/mirror
-export SRC_DIR=/srv/src
-export TMP_DIR=/srv/tmp
-export CCACHE_DIR=/srv/ccache
-export ZIP_DIR=/srv/zips
-export LMANIFEST_DIR=/srv/local_manifests
-export DELTA_DIR=/srv/delta
-export KEYS_DIR=/srv/keys
-export LOGS_DIR=/srv/logs
-export USERSCRIPTS_DIR=/srv/userscripts
-export DEBIAN_FRONTEND=noninteractive
-export USER=root
+export MIRROR_DIR=$HOME/e/mirror
+export SRC_DIR=$HOME/e/src
+export TMP_DIR=$HOME/e/tmp
+export CCACHE_DIR=$HOME/e/ccache
+export ZIP_DIR=$HOME/e/zips
+export LMANIFEST_DIR=$HOME/e/local_manifests
+export DELTA_DIR=$HOME/e/delta
+export KEYS_DIR=$HOME/e/keys
+export LOGS_DIR=$HOME/e/logs
+export USERSCRIPTS_DIR=$HOME/e/userscripts
+#export USER=root
 
 # Configurable environment variables
 ####################################
@@ -52,11 +50,11 @@ export INCLUDE_PROPRIETARY=true
 
 # Environment for the LineageOS branches name
 # See https://github.com/LineageOS/android_vendor_cm/branches for possible options
-export BRANCH_NAME='v1-oreo'
+export BRANCH_NAME='v1-q'
 
 # Environment for the device name
 # eg. DEVICE='s2'
-export DEVICE='s2'
+export DEVICE='davinci'
 
 # Release type string
 export RELEASE_TYPE='UNOFFICIAL'
@@ -169,11 +167,11 @@ else
    git clone https://gitlab.e.foundation/e/os/docker-lineage-cicd.git $TMP_DIR/buildscripts
 fi
 
-cp -rf $TMP_DIR/buildscripts/src/* /root/
-cp $TMP_DIR/buildscripts/apt_preferences /etc/apt/preferences
+cp -rf $TMP_DIR/buildscripts/src/* $HOME/e/root/
+#cp $TMP_DIR/buildscripts/apt_preferences /etc/apt/preferences
 # Download and build delta tools
 ################################
-cd /root/ && \
+cd $HOME/e/root/ && \
         mkdir delta && \
         echo "cloning"
         git clone --depth=1 https://github.com/omnirom/android_packages_apps_OpenDelta.git OpenDelta && \
@@ -181,14 +179,14 @@ cd /root/ && \
         cp OpenDelta/server/minsignapk.jar OpenDelta/server/opendelta.sh delta/ && \
         chmod +x delta/opendelta.sh && \
         rm -rf OpenDelta/ && \
-        sed -i -e "s|^\s*HOME=.*|HOME=/root|; \
+        sed -i -e "s|^\s*HOME=.*|HOME=$HOME/e/root|; \
                    s|^\s*BIN_XDELTA=.*|BIN_XDELTA=xdelta3|; \
                    s|^\s*FILE_MATCH=.*|FILE_MATCH=lineage-\*.zip|; \
                    s|^\s*PATH_CURRENT=.*|PATH_CURRENT=$SRC_DIR/out/target/product/$DEVICE|; \
                    s|^\s*PATH_LAST=.*|PATH_LAST=$SRC_DIR/delta_last/$DEVICE|; \
                    s|^\s*KEY_X509=.*|KEY_X509=$KEYS_DIR/releasekey.x509.pem|; \
                    s|^\s*KEY_PK8=.*|KEY_PK8=$KEYS_DIR/releasekey.pk8|; \
-                   s|publish|$DELTA_DIR|g" /root/delta/opendelta.sh
+                   s|publish|$DELTA_DIR|g" $HOME/e/root/delta/opendelta.sh
 
 # Set the work directory
 ########################
@@ -196,10 +194,10 @@ cd $SRC_DIR
 
 # Allow redirection of stdout to docker logs
 ############################################
-ln -sf /proc/1/fd/1 /var/log/docker.log
+#ln -sf /proc/1/fd/1 /var/log/docker.log
 
 # Set the entry point to init.sh
 ################################
-/root/init.sh
+$HOME/e/root/init.sh
 
 #end script
